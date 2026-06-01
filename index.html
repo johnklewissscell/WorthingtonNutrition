@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Worthington Nutrition</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body>
+    <header>
+      <h1>Worthington Online Nutrition Menu</h1>
+    </header>
+
+    <div class="search-wrapper">
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search for products..."
+      />
+    </div>
+
+    <div id="menu-container"></div>
+
+    <div id="popup" class="popup hidden">
+      <div class="popup-content">
+        <span id="close-popup">&times;</span>
+        <h2 id="popup-title"></h2>
+        <div id="popup-details"></div>
+      </div>
+    </div>
+
+    <script type="module" src="index.js"></script>
+    <script src="extension-overlay.js"></script>
+  </body>
+</html>
