@@ -66,9 +66,15 @@ async function loadMappings() {
       });
     }
 
-    allProducts = items;
-    window.allProducts = allProducts;
-    renderProducts(allProducts);
+    items.sort((a, b) =>
+  a.name.localeCompare(b.name, undefined, {
+    sensitivity: "base"
+  })
+);
+
+allProducts = items;
+window.allProducts = allProducts;
+renderProducts(allProducts);
   } catch (err) {
     console.error("Failed to load mappings:", err.message);
     container.innerHTML = `<p style="color:red;">Connection error: ${err.message}</p>`;
