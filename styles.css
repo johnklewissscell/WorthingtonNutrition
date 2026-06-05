@@ -72,7 +72,7 @@ header h1 {
 }
 
 .menu-item:hover .image-wrapper {
-  background: linear-color-space(srgb) #f0f9ff;
+  background: #f0f9ff;
 }
 
 .product-img {
@@ -383,4 +383,52 @@ header h1 {
 .nutrition-link a {
   color: #007bff;
   text-decoration: none;
+}
+
+.confirm-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.confirm-popup.hidden {
+  display: none;
+}
+
+.confirm-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.confirm-btn {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 8px 16px;
+}
+
+.confirm-primary {
+  background: #003594;
+  color: #ffffff;
+}
+
+.confirm-secondary {
+  background: #f1f5ff;
+  border: 1px solid #e6edf3;
+  color: #0f172a;
 }

@@ -1,0 +1,4 @@
+fatsecret-server/.env
+fatsecret-server/node_modules/
+fatsecret-server/off-cache.json
+fatsecret-server/*.tmp

@@ -22,6 +22,10 @@ function toTitleCase(str) {
   return str.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 async function loadMappings() {
   const container = document.getElementById("menu-container");
 
@@ -174,7 +178,7 @@ document.addEventListener("input", (e) => {
       return;
     }
 
-    const regex = new RegExp("\\b" + searchTerm, "i");
+    const regex = new RegExp("\\b" + escapeRegExp(searchTerm), "i");
 
     const filteredItems = allProducts.filter((item) => {
       return regex.test(item.name);
