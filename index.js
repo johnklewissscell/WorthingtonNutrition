@@ -71,14 +71,14 @@ async function loadMappings() {
     }
 
     items.sort((a, b) =>
-  a.name.localeCompare(b.name, undefined, {
-    sensitivity: "base"
-  })
-);
+      a.name.localeCompare(b.name, undefined, {
+        sensitivity: "base",
+      }),
+    );
 
-allProducts = items;
-window.allProducts = allProducts;
-renderProducts(allProducts);
+    allProducts = items;
+    window.allProducts = allProducts;
+    renderProducts(allProducts);
   } catch (err) {
     console.error("Failed to load mappings:", err.message);
     container.innerHTML = `<p style="color:red;">Connection error: ${err.message}</p>`;
@@ -124,11 +124,11 @@ function renderProducts(items) {
 async function loadNutrition(item) {
   try {
     let params = new URLSearchParams({
-      upc: item.UPC
+      upc: item.UPC,
     });
 
     let res = await fetch(NUTRITION_API + "?" + params.toString());
-    
+
     let data = null;
     if (res.ok) {
       data = await res.json();
@@ -147,7 +147,7 @@ async function loadNutrition(item) {
     if (item.name || item.brand) {
       params = new URLSearchParams({
         name: item.name || "",
-        brand: item.brand || ""
+        brand: item.brand || "",
       });
 
       res = await fetch(NUTRITION_API + "?" + params.toString());
@@ -163,7 +163,6 @@ async function loadNutrition(item) {
     }
 
     alert("Nutrition not found");
-
   } catch (err) {
     alert("Nutrition lookup failed: " + (err.message || "Check server"));
   }
@@ -265,14 +264,18 @@ function showNutritionPopup(food) {
         </span>
       </div>
 
-      ${food.food_url ? `
+      ${
+        food.food_url
+          ? `
       <div class="nutrition-link">
         <a href="${food.food_url}"
            target="_blank">
           View Full Nutrition Facts
         </a>
       </div>
-      ` : ''}
+      `
+          : ""
+      }
 
     </div>
   `;
