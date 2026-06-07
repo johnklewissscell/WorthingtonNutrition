@@ -20,3 +20,13 @@ If you cannot do this on your own, feel free to use Copilot or Codex
 Commit and push
 
 LOG YOUR WORK HERE:
+
+2026-06-07: Implemented local server USDA integration and image scraper.
+- Added USDA API key support in `server.js` (dotenv), normalized `/nutrition` responses.
+- Added lightweight Amazon image scraper `scraper/amazon.js` (uses node-fetch + cheerio). CLI: `node scraper/amazon.js --asin <ASIN>` or `--query "name"`.
+- Added `cheerio` dependency and `wn-scrape-amazon` bin entry in `package.json`.
+- Installed deps and started server for local testing.
+
+Notes:
+- Scraper first tries `og:image` and `data-a-dynamic-image`; may fail for heavily-protected pages. If Amazon scraping fails, use product images from OpenFoodFacts or placeholder images in `images/`.
+- DO NOT COMMIT your USDA API key. Rotate the key since it was pasted in chat.
