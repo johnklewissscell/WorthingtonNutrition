@@ -20,3 +20,7 @@ If you cannot do this on your own, feel free to use Copilot or Codex
 Commit and push
 
 LOG YOUR WORK HERE:
+
+The USDA doesnt want to work, I did create an API for the service. 
+Only Open Food Facts works, but no nutrition. Fo`r getting images and names.
+The Amazon scraper throws a HTTP 503 error, blocking automated scraping.

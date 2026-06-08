@@ -201,8 +201,8 @@ function showNutritionPopup(food) {
     <div class="nutrition-container">
 
       <div class="nutrition-brand">
-        ${food.brand_name || ""}
-      </div>
+            ${food.brand_name || food.brands || ""}
+          </div>
 
       <hr>
 
@@ -264,18 +264,18 @@ function showNutritionPopup(food) {
         </span>
       </div>
 
-      ${
-        food.food_url
-          ? `
+      ${food.food_url ? `
       <div class="nutrition-link">
-        <a href="${food.food_url}"
-           target="_blank">
+        <a href="${(function(){
+            const queryParts = [food.brand_name || food.brands, (serving && serving.serving_description) || food.description || food.food_name || food.product_name || ''].filter(Boolean).join(' ');
+            const usdaSearch = 'https://fdc.nal.usda.gov/fdc-app.html#/?query=' + encodeURIComponent(queryParts || food.brand_name || food.brands || food.food_name || food.product_name || '');
+            return food.food_url || usdaSearch;
+          })()}"
+           target="_blank" rel="noopener noreferrer">
           View Full Nutrition Facts
         </a>
       </div>
-      `
-          : ""
-      }
+      ` : ''}
 
     </div>
   `;
