@@ -136,7 +136,7 @@ async function loadNutrition(item) {
       data = { found: false };
     }
 
-    if (data && data.food) {
+    if (data && data.found && data.food) {
       if (data.foodUrl) {
         data.food.food_url = data.foodUrl;
       }
@@ -153,7 +153,7 @@ async function loadNutrition(item) {
       res = await fetch(NUTRITION_API + "?" + params.toString());
       data = res.ok ? await res.json() : { found: false };
 
-      if (data && data.food) {
+      if (data && data.found && data.food) {
         if (data.foodUrl) {
           data.food.food_url = data.foodUrl;
         }
@@ -162,7 +162,7 @@ async function loadNutrition(item) {
       }
     }
 
-    alert("Nutrition not found");
+    alert("Nutrition data not found in FatSecret for this product. Please check the UPC or search by name.");
   } catch (err) {
     alert("Nutrition lookup failed: " + (err.message || "Check server"));
   }
@@ -191,10 +191,15 @@ function showNutritionPopup(food) {
   let serving = null;
 
   if (food.servings && food.servings.serving) {
-    serving = Array.isArray(food.servings.serving)
-      ? food.servings.serving[0]
-      : food.servings.serving;
+    const servings = Array.isArray(food.servings.serving) ? food.servings.serving : [food.servings.serving];
+    // Find the default serving size (matches the FatSecret product page)
+    serving = servings.find(s => s.is_default === "1") || servings[0];
   }
+
+  const formatVal = (val, unit = "") => {
+    if (val === undefined || val === null || val === "") return "N/A";
+    return val + unit;
+  };
 
   const html = `
 
@@ -203,6 +208,9 @@ function showNutritionPopup(food) {
       <div class="nutrition-brand">
             ${food.brand_name || food.brands || ""}
           </div>
+      <div style="font-size: 10px; color: #666; margin-bottom: 5px;">
+        Source: FatSecret Platform API
+      </div>
 
       <hr>
 
@@ -216,7 +224,7 @@ function showNutritionPopup(food) {
       <div class="nutrition-row calories">
         <span>Calories</span>
         <span>
-          ${serving?.calories || "N/A"}
+          ${formatVal(serving?.calories)}
         </span>
       </div>
 
@@ -225,57 +233,51 @@ function showNutritionPopup(food) {
       <div class="nutrition-row">
         <span>Total Fat</span>
         <span>
-          ${serving?.fat || 0}g
+          ${formatVal(serving?.fat, "g")}
         </span>
       </div>
 
       <div class="nutrition-row">
         <span>Saturated Fat</span>
         <span>
-          ${serving?.saturated_fat || 0}g
+          ${formatVal(serving?.saturated_fat, "g")}
         </span>
       </div>
 
       <div class="nutrition-row">
         <span>Carbohydrates</span>
         <span>
-          ${serving?.carbohydrate || 0}g
+          ${formatVal(serving?.carbohydrate, "g")}
         </span>
       </div>
 
       <div class="nutrition-row">
         <span>Sugar</span>
         <span>
-          ${serving?.sugar || 0}g
+          ${formatVal(serving?.sugar, "g")}
         </span>
       </div>
 
       <div class="nutrition-row">
         <span>Protein</span>
         <span>
-          ${serving?.protein || 0}g
+          ${formatVal(serving?.protein, "g")}
         </span>
       </div>
 
       <div class="nutrition-row">
         <span>Sodium</span>
         <span>
-          ${serving?.sodium || 0}mg
+          ${formatVal(serving?.sodium, "mg")}
         </span>
       </div>
 
-      ${food.food_url ? `
       <div class="nutrition-link">
-        <a href="${(function(){
-            const queryParts = [food.brand_name || food.brands, (serving && serving.serving_description) || food.description || food.food_name || food.product_name || ''].filter(Boolean).join(' ');
-            const usdaSearch = 'https://fdc.nal.usda.gov/fdc-app.html#/?query=' + encodeURIComponent(queryParts || food.brand_name || food.brands || food.food_name || food.product_name || '');
-            return food.food_url || usdaSearch;
-          })()}"
+        <a href="${food.food_url || `https://foods.fatsecret.com/calories-nutrition/search?q=${encodeURIComponent(food.brand_name || '')} ${encodeURIComponent(food.food_name || '')}`}"
            target="_blank" rel="noopener noreferrer">
           View Full Nutrition Facts
         </a>
       </div>
-      ` : ''}
 
     </div>
   `;
